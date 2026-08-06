@@ -4,16 +4,31 @@ const Button = ({ onClick, text }) => {
   return <button onClick={onClick}>{text}</button>;
 };
 
-const Statistics = ({ text, stats }) => {
+const Statistic = ({ text, value }) => {
   return (
-    <div>
-      {text}:{stats}
-    </div>
+    <p>
+      {text} : {value}
+    </p>
+  );
+};
+
+const Statistics = ({ good, neutral, bad, total, average, positive }) => {
+  if (total === 0) {
+    return <p>No feedback given</p>;
+  }
+  return (
+    <>
+      <Statistic text={"Good"} value={good} />
+      <Statistic text={"Neutral"} value={neutral} />
+      <Statistic text={"Bad"} value={bad} />
+      <Statistic text={"All"} value={total} />
+      <Statistic text={"Average"} value={average} />
+      <Statistic text={"Positive"} value={`${positive} %`} />
+    </>
   );
 };
 
 const App = () => {
-  // save clicks of each button to its own state
   const [good, setGood] = useState(0);
   const [neutral, setNeutral] = useState(0);
   const [bad, setBad] = useState(0);
@@ -24,19 +39,16 @@ const App = () => {
   const handleGoodFeedback = () => {
     const newGoodClick = good + 1;
     setGood(newGoodClick);
-    /* setTotal(newGoodClick + neutral + bad);*/
   };
 
   const handleNeutralFeedback = () => {
     const newNeutralClick = neutral + 1;
     setNeutral(newNeutralClick);
-    /* setTotal(good + newNeutralClick + bad);*/
   };
 
   const handleBadFeedback = () => {
     const newBadClick = bad + 1;
     setBad(newBadClick);
-    /* setTotal(good + neutral + newBadClick);*/
   };
 
   return (
@@ -47,12 +59,14 @@ const App = () => {
       <Button onClick={handleBadFeedback} text={"bad"} />
       <br />
       <h1>Statistics</h1>
-      <Statistics text={"Good"} stats={good} />
-      <Statistics text="Neutral" stats={neutral} />
-      <Statistics text="Bad" stats={bad} />
-      <Statistics text="All" stats={total} />
-      <Statistics text="Average" stats={average} />
-      <Statistics text={"Positive"} stats={`${positive} %`} />
+      <Statistics
+        good={good}
+        neutral={neutral}
+        bad={bad}
+        total={total}
+        average={average}
+        positive={positive}
+      />
     </div>
   );
 };
