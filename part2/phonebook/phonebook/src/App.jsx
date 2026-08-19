@@ -7,10 +7,18 @@ const App = () => {
 
   const handleAddPerson = (event) => {
     event.preventDefault();
+
+    const nameExists = persons.some((person) => person.name === newName);
+    if (nameExists) {
+      alert(`${newName} already exists`);
+      return;
+    }
+
     const person = {
       name: newName,
       id: crypto.randomUUID(),
     };
+
     setPersons(persons.concat(person));
     setNewName("");
   };
