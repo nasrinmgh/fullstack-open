@@ -1,9 +1,12 @@
 import { useState } from "react";
-import Person from "./components/Person";
+import Infos from "./components/Infos";
 
 const App = () => {
-  const [persons, setPersons] = useState([{ name: "Arto Hellas", id: "Arto" }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", id: "Arto", number: "00- 12345" },
+  ]);
   const [newName, setNewName] = useState("");
+  const [newNumber, setNewNumber] = useState("");
 
   const handleAddPerson = (event) => {
     event.preventDefault();
@@ -17,14 +20,20 @@ const App = () => {
     const person = {
       name: newName,
       id: crypto.randomUUID(),
+      number: newNumber,
     };
 
     setPersons(persons.concat(person));
     setNewName("");
+    setNewNumber("");
   };
 
   const handleNewPerson = (event) => {
     setNewName(event.target.value);
+  };
+
+  const handleNewNumber = (event) => {
+    setNewNumber(event.target.value);
   };
 
   return (
@@ -35,13 +44,16 @@ const App = () => {
           name: <input onChange={handleNewPerson} value={newName} />
         </div>
         <div>
+          number: <input onChange={handleNewNumber} value={newNumber} />
+        </div>
+        <div>
           <button type="submit">add</button>
         </div>
       </form>
       <h2>Numbers</h2>
       <div>
         {persons.map((person) => (
-          <Person key={person.id} person={person} />
+          <Infos person={person} key={person.id} />
         ))}
       </div>
     </div>
