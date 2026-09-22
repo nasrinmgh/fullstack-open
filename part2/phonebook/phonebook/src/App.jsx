@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import personService from "./services/persons";
 import Infos from "./components/Infos";
 import Filter from "./components/Filter";
 
@@ -10,14 +11,10 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    console.log("effect");
-    axios.get("http://localhost:3001/persons").then((response) => {
-      console.log("promise fulfilled");
-
-      setPersons(response.data);
+    personService.getAll().then((persons) => {
+      setPersons(persons);
     });
   }, []);
-  console.log("render", persons.length, "persons");
 
   const handleAddPerson = (event) => {
     event.preventDefault();
@@ -30,11 +27,14 @@ const App = () => {
 
     const person = {
       name: newName,
-      id: crypto.randomUUID(),
       number: newNumber,
     };
 
-    setPersons(persons.concat(person));
+    personService
+      .create(person)
+      .then((returnedPerson) =>
+        setPersons((persons) => persons.concat(returnedPerson)),
+      );
     setNewName("");
     setNewNumber("");
   };
