@@ -39,6 +39,15 @@ const App = () => {
     setNewNumber("");
   };
 
+  const confirmDelete = (id) => {
+    const confirmed = window.confirm("Delete this person?");
+    if (confirmed) {
+      personService.deletePerson(id).then(() => {
+        setPersons((persons) => persons.filter((person) => person.id !== id));
+      });
+    }
+  };
+
   const handleNewPerson = (event) => {
     setNewName(event.target.value);
   };
@@ -75,7 +84,7 @@ const App = () => {
       <h2>Numbers</h2>
       <div>
         {personsToShow.map((person) => (
-          <Infos person={person} key={person.id} />
+          <Infos person={person} key={person.id} handleDelete={confirmDelete} />
         ))}
       </div>
     </div>
